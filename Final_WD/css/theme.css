@@ -1,0 +1,140 @@
+/* ============================================
+   CARE — Shared Dark Mode Theme
+   Link this AFTER dashboard.css / settings.css
+   ============================================ */
+
+body.dark-mode {
+  --bg: #0f1a24;
+  --card-bg: #16232f;
+  --text: #e8f0f7;
+  --text-soft: #a5bdd0;
+  --text-muted: #6d8ba3;
+  --border: #24394a;
+  --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* smooth theme transition */
+body,
+.sidebar,
+.panel,
+.stat-card,
+.full-panel,
+.settings-card,
+.settings-footer,
+.modal,
+.equip-row,
+.schedule-item,
+.quick-action,
+.shift-col,
+.shift-person,
+.help-item,
+.toggle-row,
+input,
+select {
+  transition: background 0.4s ease, border-color 0.4s ease, color 0.3s ease;
+}
+
+/* ---------- SIDEBAR ---------- */
+body.dark-mode .sidebar {
+  background: linear-gradient(180deg, #0a1f30 0%, #081826 100%);
+}
+
+/* ---------- INPUTS ---------- */
+body.dark-mode .search-box input {
+  background: #1b2c3b;
+  color: var(--text);
+  border-color: var(--border);
+}
+body.dark-mode .search-box input::placeholder { color: var(--text-muted); }
+
+body.dark-mode .btn-icon {
+  background: #1b2c3b;
+  border-color: var(--border);
+}
+body.dark-mode .btn-icon:hover {
+  border-color: var(--primary-light);
+}
+
+/* ---------- CARDS & PANELS ---------- */
+body.dark-mode .stat-card,
+body.dark-mode .panel,
+body.dark-mode .full-panel,
+body.dark-mode .modal,
+body.dark-mode .settings-card,
+body.dark-mode .settings-footer {
+  background: #16232f;
+  border-color: #24394a;
+}
+
+body.dark-mode .stat-card::after {
+  background: radial-gradient(circle, rgba(30, 126, 140, 0.15), transparent 70%);
+}
+
+/* ---------- LIST ITEMS ---------- */
+body.dark-mode .equip-row,
+body.dark-mode .schedule-item,
+body.dark-mode .quick-action,
+body.dark-mode .shift-col,
+body.dark-mode .shift-person,
+body.dark-mode .help-item,
+body.dark-mode .toggle-row,
+body.dark-mode .brainstorm-table td {
+  background: #1b2c3b;
+  border-color: #24394a;
+}
+
+body.dark-mode .equip-row:hover,
+body.dark-mode .help-item:hover,
+body.dark-mode .schedule-item:hover,
+body.dark-mode .quick-action:hover {
+  background: #22394d;
+  border-color: var(--primary-light);
+}
+
+body.dark-mode .shift-person { background: #22394d; }
+body.dark-mode .shift-person:hover { background: #2c4457; }
+
+/* ---------- ICON TILES ---------- */
+body.dark-mode .schedule-date,
+body.dark-mode .equip-icon,
+body.dark-mode .help-item > i:first-child {
+  background: #22394d;
+  border-color: #2c4457;
+}
+
+/* ---------- BRAINSTORM TABLE ---------- */
+body.dark-mode .brainstorm-table tr:hover td { background: #22394d; }
+body.dark-mode .brainstorm-table tr td:first-child { border-left-color: #24394a; }
+body.dark-mode .brainstorm-table tr td:last-child { border-right-color: #24394a; }
+body.dark-mode .brainstorm-table td { border-top-color: #24394a; border-bottom-color: #24394a; }
+
+/* ---------- FORM INPUTS (modal + settings) ---------- */
+body.dark-mode .form-group input,
+body.dark-mode .form-group select,
+body.dark-mode .settings-form input {
+  background: #1b2c3b;
+  color: var(--text);
+  border-color: var(--border);
+}
+body.dark-mode .form-group input::placeholder,
+body.dark-mode .settings-form input::placeholder { color: var(--text-muted); }
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group select:focus,
+body.dark-mode .settings-form input:focus {
+  background: #22394d;
+  border-color: var(--primary-light);
+}
+
+/* ---------- MISC ---------- */
+body.dark-mode .modal-close { background: #1b2c3b; color: var(--text-soft); }
+body.dark-mode .sidebar-brand { border-bottom-color: rgba(255, 255, 255, 0.06); }
+body.dark-mode .nav-item.active { background: rgba(255, 255, 255, 0.1); }
+body.dark-mode .menu-toggle { background: #1b2c3b; border-color: var(--border); color: var(--text-soft); }
+body.dark-mode .btn-secondary { background: #1b2c3b; border-color: var(--border); color: var(--text-soft); }
+body.dark-mode .btn-secondary:hover { border-color: var(--text-soft); color: var(--text); }
+body.dark-mode .footer-links a { color: var(--text-soft); }
+
+/* remove the redundant dark overrides from settings.css */
+/* (the ones currently in settings.css can now be deleted) */

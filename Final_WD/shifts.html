@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARE · Shifts</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/shifts.css">
+  <link rel="stylesheet" href="css/theme.css">
+</head>
+<body data-page="shifts">
+
+  <div id="care-sidebar-root"></div>
+
+  <main class="main">
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h2>Shift Roster</h2>
+        <span>Assign your team to morning, afternoon, and night shifts.</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="view-switch" id="viewSwitch">
+          <button class="view-btn active" data-view="week" title="Week view">
+            <i class="fas fa-calendar-week"></i>
+          </button>
+          <button class="view-btn" data-view="day" title="Day view">
+            <i class="fas fa-calendar-day"></i>
+          </button>
+        </div>
+        <button class="btn-primary" id="addShiftBtn">
+          <i class="fas fa-plus"></i> Assign Shift
+        </button>
+      </div>
+    </div>
+
+    <!-- SUMMARY STRIP -->
+    <div class="shift-summary" id="shiftSummary">
+      <div class="summary-chip active" data-filter="all">
+        <span class="chip-count" id="countAllShifts">0</span>
+        <span class="chip-label">Total Shifts</span>
+      </div>
+      <div class="summary-chip" data-filter="today">
+        <span class="dot dot-today"></span>
+        <span class="chip-count" id="countTodayShifts">0</span>
+        <span class="chip-label">Today</span>
+      </div>
+      <div class="summary-chip" data-filter="morning">
+        <span class="dot dot-morning"></span>
+        <span class="chip-count" id="countMorning">0</span>
+        <span class="chip-label">Morning</span>
+      </div>
+      <div class="summary-chip" data-filter="afternoon">
+        <span class="dot dot-afternoon"></span>
+        <span class="chip-count" id="countAfternoon">0</span>
+        <span class="chip-label">Afternoon</span>
+      </div>
+      <div class="summary-chip" data-filter="night">
+        <span class="dot dot-night"></span>
+        <span class="chip-count" id="countNight">0</span>
+        <span class="chip-label">Night</span>
+      </div>
+    </div>
+
+    <!-- WEEK NAVIGATOR -->
+    <div class="week-nav">
+      <button class="btn-icon" id="prevWeek" title="Previous week">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <div class="week-label">
+        <h3 id="weekLabel">Jun 9 – Jun 15, 2026</h3>
+        <span id="weekSub">This week</span>
+      </div>
+      <button class="btn-icon" id="nextWeek" title="Next week">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <button class="btn-secondary btn-today" id="goToday">Today</button>
+    </div>
+
+    <!-- WEEK VIEW -->
+    <section class="view-panel active" id="weekView">
+      <div class="week-grid" id="weekGrid">
+        <!-- Day columns injected by JS -->
+      </div>
+    </section>
+
+    <!-- DAY VIEW -->
+    <section class="view-panel" id="dayView">
+      <div class="day-view-card">
+        <div class="day-view-header">
+          <h3 id="dayViewTitle">Monday, June 9</h3>
+          <div class="day-nav">
+            <button class="btn-icon" id="prevDay" title="Previous day">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="btn-icon" id="nextDay" title="Next day">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="day-shifts" id="dayShifts">
+          <!-- Three shift columns injected by JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ ASSIGN/EDIT SHIFT MODAL ============ -->
+  <div class="modal-overlay" id="shiftModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="shiftModalTitle">Assign Shift</h3>
+        <button class="modal-close" id="shiftModalClose"><i class="fas fa-times"></i></button>
+      </div>
+
+      <form id="shiftForm">
+        <input type="hidden" id="shiftId">
+
+                <div class="form-group">
+          <label for="shiftName">Team member</label>
+          <!-- Changed input to select -->
+          <select id="shiftName" required>
+            <option value="">-- Select Employee --</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shiftDate">Date</label>
+            <input type="date" id="shiftDate" required>
+          </div>
+          <div class="form-group">
+            <label for="shiftType">Shift</label>
+            <select id="shiftType">
+              <option value="morning">Morning (6 AM – 2 PM)</option>
+              <option value="afternoon" selected>Afternoon (2 PM – 10 PM)</option>
+              <option value="night">Night (10 PM – 6 AM)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shiftRole">Role (optional)</label>
+            <input type="text" id="shiftRole" placeholder="e.g. Technician">
+          </div>
+          <div class="form-group">
+            <label for="shiftPhone">Phone (optional)</label>
+            <input type="text" id="shiftPhone" placeholder="e.g. 555-0123">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="shiftNotes">Notes (optional)</label>
+          <input type="text" id="shiftNotes" placeholder="e.g. Bring toolkit">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="shiftModalCancel">Cancel</button>
+          <button type="submit" class="btn-primary" id="shiftSaveBtn">
+            <i class="fas fa-check"></i> Save Shift
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ SHIFT DETAIL MODAL ============ -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3 id="detailTitle">Shift</h3>
+        <button class="modal-close" id="detailClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="detail-body" id="detailBody"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="detailDelete">
+          <i class="fas fa-trash"></i> Remove
+        </button>
+        <button type="button" class="btn-primary" id="detailEdit">
+          <i class="fas fa-pen"></i> Edit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DELETE CONFIRM ============ -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3>Remove Shift?</h3>
+        <button class="modal-close" id="deleteClose"><i class="fas fa-times"></i></button>
+      </div>
+      <p class="delete-text">
+        Remove <strong id="deleteName">this shift</strong> from the roster?
+        This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="deleteCancel">Cancel</button>
+        <button type="button" class="btn-danger" id="deleteConfirm">
+          <i class="fas fa-trash"></i> Remove
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TOAST ============ -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/shifts.js"></script>
+</body>
+</html>

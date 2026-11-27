@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARE · Brainstorm</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/brainstorm.css">
+  <link rel="stylesheet" href="css/theme.css">
+</head>
+<body data-page="brainstorm">
+
+  <div id="care-sidebar-root"></div>
+
+  <main class="main">
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h2>Brainstorm Board</h2>
+        <span>Capture ideas, plan improvements, and track progress together.</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search ideas..." id="ideaSearch">
+        </div>
+        <button class="btn-primary" id="addIdeaBtn">
+          <i class="fas fa-plus"></i> New Idea
+        </button>
+      </div>
+    </div>
+
+    <!-- SUMMARY CHIPS -->
+    <div class="brainstorm-summary" id="brainstormSummary">
+      <div class="summary-chip active" data-filter="all">
+        <span class="chip-count" id="countAll">0</span>
+        <span class="chip-label">All Ideas</span>
+      </div>
+      <div class="summary-chip" data-filter="high">
+        <span class="dot dot-high"></span>
+        <span class="chip-count" id="countHigh">0</span>
+        <span class="chip-label">High Priority</span>
+      </div>
+      <div class="summary-chip" data-filter="mine">
+        <i class="fas fa-user" style="font-size:0.7rem;opacity:0.8"></i>
+        <span class="chip-count" id="countMine">0</span>
+        <span class="chip-label">Assigned to me</span>
+      </div>
+      <div class="summary-chip" data-filter="done">
+        <span class="dot dot-done"></span>
+        <span class="chip-count" id="countDone">0</span>
+        <span class="chip-label">Done</span>
+      </div>
+    </div>
+
+    <!-- BOARD -->
+    <div class="kanban-board" id="kanbanBoard">
+      <section class="kanban-col" data-status="backlog">
+        <div class="kanban-col-header">
+          <div class="col-title">
+            <span class="col-dot col-dot-backlog"></span>
+            <h3>Backlog</h3>
+            <span class="col-count" id="colCountBacklog">0</span>
+          </div>
+          <button class="col-add" data-add-to="backlog" title="Add to Backlog">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="kanban-list" id="listBacklog" data-drop="backlog"></div>
+      </section>
+
+      <section class="kanban-col" data-status="inprogress">
+        <div class="kanban-col-header">
+          <div class="col-title">
+            <span class="col-dot col-dot-inprogress"></span>
+            <h3>In Progress</h3>
+            <span class="col-count" id="colCountInprogress">0</span>
+          </div>
+          <button class="col-add" data-add-to="inprogress" title="Add to In Progress">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="kanban-list" id="listInprogress" data-drop="inprogress"></div>
+      </section>
+
+      <section class="kanban-col" data-status="done">
+        <div class="kanban-col-header">
+          <div class="col-title">
+            <span class="col-dot col-dot-done"></span>
+            <h3>Done</h3>
+            <span class="col-count" id="colCountDone">0</span>
+          </div>
+          <button class="col-add" data-add-to="done" title="Add to Done">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="kanban-list" id="listDone" data-drop="done"></div>
+      </section>
+    </div>
+
+    <!-- EMPTY STATE -->
+      <div class="empty-state" id="boardEmpty" style="display:none;">
+      <div class="empty-icon"><i class="fas fa-lightbulb"></i></div>
+      <h3>No ideas yet</h3>
+      <p>Add your first idea to start brainstorming with your team. Capture thoughts, plan improvements, and move them across the board.</p>
+      <button class="btn-primary" id="emptyAddBtn">
+        <i class="fas fa-plus"></i> Create First Idea
+      </button>
+    </div>
+  </main>
+
+  <!-- ============ ADD/EDIT IDEA MODAL ============ -->
+  <div class="modal-overlay" id="ideaModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="ideaModalTitle">New Idea</h3>
+        <button class="modal-close" id="ideaModalClose"><i class="fas fa-times"></i></button>
+      </div>
+
+      <form id="ideaForm">
+        <input type="hidden" id="ideaId">
+        <input type="hidden" id="ideaStatus" value="backlog">
+
+        <div class="form-group">
+          <label for="ideaTitle">Idea title</label>
+          <input type="text" id="ideaTitle" placeholder="e.g. Upgrade freezer compressor" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ideaDesc">Description (optional)</label>
+          <input type="text" id="ideaDesc" placeholder="Short summary of the idea">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ideaPriority">Priority</label>
+            <select id="ideaPriority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ideaAssignee">Assignee</label>
+            <!-- CHANGED TO SELECT DROPDOWN -->
+            <select id="ideaAssignee">
+              <option value="">-- Unassigned --</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ideaEquipment">Related equipment</label>
+            <select id="ideaEquipment">
+              <option value="">— None —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ideaStatusField">Status</label>
+            <select id="ideaStatusField">
+              <option value="backlog">Backlog</option>
+              <option value="inprogress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="ideaModalCancel">Cancel</button>
+          <button type="submit" class="btn-primary" id="ideaSaveBtn">
+            <i class="fas fa-check"></i> Save Idea
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ IDEA DETAIL MODAL ============ -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3 id="detailTitle">Idea</h3>
+        <button class="modal-close" id="detailClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="detail-body" id="detailBody"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="detailDelete">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+        <button type="button" class="btn-primary" id="detailEdit">
+          <i class="fas fa-pen"></i> Edit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DELETE CONFIRM ============ -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3>Delete Idea?</h3>
+        <button class="modal-close" id="deleteClose"><i class="fas fa-times"></i></button>
+      </div>
+      <p class="delete-text">
+        Are you sure you want to delete <strong id="deleteName">this idea</strong>?
+        This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="deleteCancel">Cancel</button>
+        <button type="button" class="btn-danger" id="deleteConfirm">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TOAST ============ -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/brainstorm.js"></script>
+</body>
+</html>

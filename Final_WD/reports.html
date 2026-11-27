@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARE · Reports</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/reports.css">
+  <link rel="stylesheet" href="css/theme.css">
+</head>
+<body data-page="reports">
+
+  <div id="care-sidebar-root"></div>
+
+  <main class="main">
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h2>Reports</h2>
+        <span>Insights into your equipment, tasks, and team performance.</span>
+      </div>
+      <div class="topbar-actions">
+        <select class="toolbar-select" id="rangeSelect">
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="all">All time</option>
+        </select>
+        <button class="btn-primary" id="exportBtn">
+          <i class="fas fa-download"></i> Export
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-grid" id="kpiGrid">
+      <div class="kpi-card" data-kpi="equipment">
+        <div class="kpi-top">
+          <div class="kpi-icon icon-blue"><i class="fas fa-microchip"></i></div>
+          <span class="kpi-trend" id="kpiEquipTrend">—</span>
+        </div>
+        <div class="kpi-value" id="kpiEquip">0</div>
+        <div class="kpi-label">Total Equipment</div>
+        <div class="kpi-sub" id="kpiEquipSub">Across all locations</div>
+      </div>
+
+      <div class="kpi-card" data-kpi="uptime">
+        <div class="kpi-top">
+          <div class="kpi-icon icon-teal"><i class="fas fa-check-circle"></i></div>
+          <span class="kpi-trend up" id="kpiUptimeTrend">—</span>
+        </div>
+        <div class="kpi-value" id="kpiUptime">0%</div>
+        <div class="kpi-label">Equipment Uptime</div>
+        <div class="kpi-sub" id="kpiUptimeSub">Operational vs. total</div>
+      </div>
+
+      <div class="kpi-card" data-kpi="tasks">
+        <div class="kpi-top">
+          <div class="kpi-icon icon-orange"><i class="fas fa-tasks"></i></div>
+          <span class="kpi-trend" id="kpiTasksTrend">—</span>
+        </div>
+        <div class="kpi-value" id="kpiTasks">0</div>
+        <div class="kpi-label">Tasks Completed</div>
+        <div class="kpi-sub" id="kpiTasksSub">Out of 0 scheduled</div>
+      </div>
+
+      <div class="kpi-card" data-kpi="shifts">
+        <div class="kpi-top">
+          <div class="kpi-icon icon-purple"><i class="fas fa-user-clock"></i></div>
+          <span class="kpi-trend" id="kpiShiftsTrend">—</span>
+        </div>
+        <div class="kpi-value" id="kpiShifts">0</div>
+        <div class="kpi-label">Shifts Covered</div>
+        <div class="kpi-sub" id="kpiShiftsSub">This period</div>
+      </div>
+    </div>
+
+    <!-- MAIN CHARTS ROW -->
+    <div class="charts-grid">
+      <!-- Equipment Status Donut -->
+      <div class="chart-panel">
+        <div class="chart-header">
+          <h3><i class="fas fa-chart-pie"></i> Equipment Status</h3>
+        </div>
+        <div class="donut-wrap">
+          <svg class="donut" id="donutChart" viewBox="0 0 200 200" aria-hidden="true">
+            <!-- segments injected by JS -->
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#eef5fb" stroke-width="24" />
+            <circle id="donutRing" cx="100" cy="100" r="80" fill="none" stroke="#1e7e8c" stroke-width="24"
+                    stroke-dasharray="0 502" stroke-linecap="round"
+                    transform="rotate(-90 100 100)" />
+          </svg>
+          <div class="donut-center">
+            <div class="donut-value" id="donutValue">0</div>
+            <div class="donut-label">Total</div>
+          </div>
+        </div>
+        <div class="donut-legend" id="donutLegend">
+          <!-- injected -->
+        </div>
+      </div>
+
+      <!-- Task Completion Bar -->
+      <div class="chart-panel">
+        <div class="chart-header">
+          <h3><i class="fas fa-chart-bar"></i> Task Completion</h3>
+        </div>
+        <div class="bar-chart" id="barChart">
+          <!-- bars injected -->
+        </div>
+        <div class="chart-footer" id="barChartFooter">
+          <span class="foot-item"><span class="foot-dot" style="background:var(--success)"></span> Completed</span>
+          <span class="foot-item"><span class="foot-dot" style="background:var(--warning)"></span> Pending</span>
+          <span class="foot-item"><span class="foot-dot" style="background:var(--danger)"></span> Overdue</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECOND ROW -->
+    <div class="charts-grid">
+      <!-- Priority Breakdown -->
+      <div class="chart-panel">
+        <div class="chart-header">
+          <h3><i class="fas fa-flag"></i> Priority Breakdown</h3>
+        </div>
+        <div class="priority-breakdown" id="priorityBreakdown">
+          <!-- injected -->
+        </div>
+      </div>
+
+      <!-- Shift Coverage -->
+      <div class="chart-panel">
+        <div class="chart-header">
+          <h3><i class="fas fa-user-clock"></i> Shift Coverage</h3>
+        </div>
+        <div class="shift-coverage" id="shiftCoverage">
+          <!-- injected -->
+        </div>
+      </div>
+    </div>
+
+    <!-- FULL WIDTH PANEL: Team Leaderboard -->
+    <div class="full-panel">
+      <div class="chart-header">
+        <h3><i class="fas fa-trophy"></i> Team Activity</h3>
+        <span class="chart-subtitle" id="leaderSub">Ranked by tasks + shifts</span>
+      </div>
+      <div class="leaderboard" id="leaderboard">
+        <!-- injected -->
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/reports.js"></script>
+</body>
+</html>

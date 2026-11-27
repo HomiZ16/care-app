@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARE · login & register</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="css/login.css">
+  <script src="js/login.js" defer></script>
+</head>
+<body>
+  <div class="care-card">
+
+    <div class="brand-bar">
+      <div class="brand-icon">C</div>
+      <div class="brand-text">
+        <h1>CARE</h1>
+        <span>Collaborative Asset & Reliability Efficiency</span>
+      </div>
+    </div>
+
+    <div class="auth-grid">
+
+      <div class="auth-col info-panel">
+        <h2><i class="fas fa-tools"></i> Keep assets reliable</h2>
+
+        <div class="scope-badge">
+          <p>
+            <i class="fas fa-store-alt"></i>
+            <span>For business owners with appliances & equipment that require maintenance.</span>
+          </p>
+        </div>
+
+        <ul class="feature-list">
+          <li><i class="fas fa-calendar-alt"></i> Co-op planning & schedule maker</li>
+          <li><i class="fas fa-table"></i> Brainstorm table & shift arrangement</li>
+          <li><i class="fas fa-database"></i> Local database for your equipment</li>
+        </ul>
+
+        <div class="local-db-hint">
+          <i class="fas fa-hdd"></i>
+          <span>Your equipment data stays <strong>local</strong> — private & fast.</span>
+        </div>
+      </div>
+
+      <div class="auth-col">
+        <div class="auth-box">
+
+          <div class="auth-tabs">
+            <button type="button" class="tab-btn active" id="tabLoginBtn">
+              <i class="fas fa-sign-in-alt"></i> Log in
+            </button>
+            <button type="button" class="tab-btn" id="tabRegisterBtn">
+              <i class="fas fa-user-plus"></i> Register
+            </button>
+          </div>
+
+          <!-- LOGIN FORM -->
+          <form id="loginForm" class="auth-form active-form">
+            <div class="input-group">
+              <label for="loginEmail">Email</label>
+              <div class="input-icon">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="loginEmail" placeholder="owner@business.com" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="loginPassword">Password</label>
+              <div class="input-icon">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+              <span>Log in</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+
+            <div class="message-box" id="loginMessage">
+              <i class="fas fa-circle-info"></i>
+              <span>Enter your credentials to access your dashboard.</span>
+            </div>
+
+            <div class="form-footer">
+              <a id="goToRegisterLink">No account? Create one</a>
+            </div>
+          </form>
+
+          <!-- REGISTER FORM -->
+          <form id="registerForm" class="auth-form">
+            <div class="input-group">
+              <label for="registerName">Business / owner name</label>
+              <div class="input-icon">
+                <i class="fas fa-user-tie"></i>
+                <input type="text" id="registerName" placeholder="e.g. Bella's Bakery" autocomplete="organization" required>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="registerEmail">Email</label>
+              <div class="input-icon">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="registerEmail" placeholder="owner@business.com" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="registerPassword">Password</label>
+              <div class="input-icon">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="registerPassword" placeholder="Create a password (min 6 chars)" autocomplete="new-password" required>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="registerConfirm">Confirm password</label>
+              <div class="input-icon">
+                <i class="fas fa-check-circle"></i>
+                <input type="password" id="registerConfirm" placeholder="Re-enter password" autocomplete="off" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+              <span>Create account</span>
+              <i class="fas fa-user-plus"></i>
+            </button>
+
+            <div class="message-box" id="registerMessage">
+              <i class="fas fa-circle-info"></i>
+              <span>Register to start managing your equipment.</span>
+            </div>
+
+            <div class="form-footer">
+              <a id="goToLoginLink">Already have an account? Log in</a>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

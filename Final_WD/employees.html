@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARE · Employees</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/employees.css">
+  <link rel="stylesheet" href="css/theme.css">
+</head>
+<body data-page="employees">
+
+  <div id="care-sidebar-root"></div>
+
+  <main class="main">
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+    <div class="topbar">
+      <div>
+        <h2>Employees</h2>
+        <span>Manage your team members and their roles.</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-primary" id="addEmployeeBtn">
+          <i class="fas fa-plus"></i> Add Employee
+        </button>
+      </div>
+    </div>
+
+    <div class="equip-toolbar" style="margin-bottom: 1.5rem;">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search by name or role..." id="empSearch">
+      </div>
+    </div>
+
+    <div class="equip-view grid-view" id="employeeList"></div>
+
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="empty-icon"><i class="fas fa-users"></i></div>
+      <h3>No employees yet</h3>
+      <p>Add your team members so you can easily assign them to shifts and tasks.</p>
+      <button class="btn-primary" id="emptyAddBtn">
+        <i class="fas fa-plus"></i> Add Employee
+      </button>
+    </div>
+  </main>
+
+  <!-- ADD/EDIT MODAL -->
+  <div class="modal-overlay" id="employeeModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add Employee</h3>
+        <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+      </div>
+
+      <form id="employeeForm">
+        <input type="hidden" id="empId">
+        
+        <div class="form-group">
+          <label for="empName">Full Name</label>
+          <input type="text" id="empName" placeholder="e.g. Marco Alvarez" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="empRole">Role</label>
+            <input type="text" id="empRole" placeholder="e.g. Lead Technician">
+          </div>
+          <div class="form-group">
+            <label for="empPhone">Phone (optional)</label>
+            <input type="text" id="empPhone" placeholder="e.g. 555-0101">
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="modalCancel">Cancel</button>
+          <button type="submit" class="btn-primary"><i class="fas fa-check"></i> Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRM -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3>Remove Employee?</h3>
+        <button class="modal-close" id="deleteClose"><i class="fas fa-times"></i></button>
+      </div>
+      <p class="delete-text">Are you sure you want to remove <strong id="deleteName">this person</strong>? This will not delete their past shifts, but they won't appear in dropdowns anymore.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="deleteCancel">Cancel</button>
+        <button type="button" class="btn-danger" id="deleteConfirm"><i class="fas fa-trash"></i> Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/employees.js"></script>
+</body>
+</html>

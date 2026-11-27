@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARE · Equipment</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/equipment.css">
+  <link rel="stylesheet" href="css/theme.css">
+</head>
+<body data-page="equipment">
+
+  <div id="care-sidebar-root"></div>
+
+  <main class="main">
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h2>Equipment</h2>
+        <span>Manage all your appliances and machines in one place.</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-primary" id="addEquipBtn">
+          <i class="fas fa-plus"></i> Add Equipment
+        </button>
+      </div>
+    </div>
+
+    <!-- SUMMARY STRIP -->
+    <div class="equip-summary" id="equipSummary">
+      <div class="summary-chip active" data-filter="all">
+        <span class="chip-count" id="countAll">0</span>
+        <span class="chip-label">All</span>
+      </div>
+      <div class="summary-chip" data-filter="ok">
+        <span class="dot dot-ok"></span>
+        <span class="chip-count" id="countOk">0</span>
+        <span class="chip-label">Operational</span>
+      </div>
+      <div class="summary-chip" data-filter="warn">
+        <span class="dot dot-warn"></span>
+        <span class="chip-count" id="countWarn">0</span>
+        <span class="chip-label">Due Soon</span>
+      </div>
+      <div class="summary-chip" data-filter="due">
+        <span class="dot dot-due"></span>
+        <span class="chip-count" id="countDue">0</span>
+        <span class="chip-label">Overdue</span>
+      </div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="equip-toolbar">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search by name or type..." id="equipSearch">
+      </div>
+      <div class="toolbar-right">
+        <select class="toolbar-select" id="filterType">
+          <option value="all">All types</option>
+          <option value="Oven">Oven</option>
+          <option value="Freezer">Freezer</option>
+          <option value="Mixer">Mixer</option>
+          <option value="Fryer">Fryer</option>
+          <option value="Other">Other</option>
+        </select>
+        <select class="toolbar-select" id="sortBy">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="name">Name (A–Z)</option>
+          <option value="service">Next service</option>
+        </select>
+        <button class="btn-icon" id="viewToggle" title="Switch to list view">
+          <i class="fas fa-th-large" id="viewIcon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- EQUIPMENT VIEW -->
+    <div class="equip-view grid-view" id="equipView"></div>
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="empty-icon"><i class="fas fa-box-open"></i></div>
+      <h3>No equipment yet</h3>
+      <p>Add your first machine or appliance to start tracking maintenance.</p>
+      <button class="btn-primary" id="emptyAddBtn">
+        <i class="fas fa-plus"></i> Add Equipment
+      </button>
+    </div>
+  </main>
+
+  <!-- ============ ADD/EDIT MODAL ============ -->
+  <div class="modal-overlay" id="equipModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add Equipment</h3>
+        <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+      </div>
+
+      <form id="equipForm">
+        <input type="hidden" id="equipId">
+
+        <div class="form-group">
+          <label for="equipName">Equipment name</label>
+          <input type="text" id="equipName" placeholder="e.g. Industrial Oven #2" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="equipType">Type</label>
+            <select id="equipType">
+              <option>Oven</option>
+              <option>Freezer</option>
+              <option>Mixer</option>
+              <option>Fryer</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="equipLocation">Location</label>
+            <input type="text" id="equipLocation" placeholder="e.g. Kitchen – Bay 2">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="equipLast">Last serviced</label>
+            <input type="date" id="equipLast">
+          </div>
+          <div class="form-group">
+            <label for="equipNext">Next service</label>
+            <input type="date" id="equipNext">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="equipNotes">Notes (optional)</label>
+          <input type="text" id="equipNotes" placeholder="e.g. Requires quarterly cleaning">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="modalCancel">Cancel</button>
+          <button type="submit" class="btn-primary" id="modalSave">
+            <i class="fas fa-check"></i> Save Equipment
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ DELETE CONFIRM ============ -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3>Delete Equipment?</h3>
+        <button class="modal-close" id="deleteClose"><i class="fas fa-times"></i></button>
+      </div>
+      <p class="delete-text">
+        Are you sure you want to delete <strong id="deleteName">this item</strong>?
+        This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="deleteCancel">Cancel</button>
+        <button type="button" class="btn-danger" id="deleteConfirm">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TOAST ============ -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/equipment.js"></script>
+</body>
+</html>

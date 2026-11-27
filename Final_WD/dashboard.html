@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARE · Dashboard</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/theme.css">
+</head>
+<body data-page="dashboard">
+
+  <div id="care-sidebar-root"></div>
+
+  <main class="main">
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h2>Welcome back, <span id="welcomeName">there</span> 👋</h2>
+        <span>Here's what's happening with your equipment today.</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search equipment..." id="searchInput">
+        </div>
+                <!-- Replace your old notification button with this block -->
+        <div class="notif-wrapper" style="position: relative;">
+          <button class="btn-icon" id="notifBtn" title="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="badge" id="notifBadge">0</span>
+          </button>
+          
+          <!-- Notification Dropdown -->
+          <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-header">Notifications</div>
+            <div class="notif-list" id="notifList">
+              <!-- Injected by JS -->
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" id="addEquipmentBtn">
+          <i class="fas fa-plus"></i> Add Equipment
+        </button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon blue"><i class="fas fa-microchip"></i></div>
+          <div class="stat-trend neutral" id="trendTotal"><i class="fas fa-minus"></i> —</div>
+        </div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-label">Total Equipment</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon teal"><i class="fas fa-check-circle"></i></div>
+          <div class="stat-trend up" id="trendOk"><i class="fas fa-arrow-up"></i> Good</div>
+        </div>
+        <div class="stat-value" id="statOk">0</div>
+        <div class="stat-label">Operational</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon orange"><i class="fas fa-tools"></i></div>
+          <div class="stat-trend neutral" id="trendWarn"><i class="fas fa-minus"></i> Due</div>
+        </div>
+        <div class="stat-value" id="statWarn">0</div>
+        <div class="stat-label">Needs Maintenance</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div>
+          <div class="stat-trend down" id="trendDue"><i class="fas fa-arrow-down"></i> Urgent</div>
+        </div>
+        <div class="stat-value" id="statDue">0</div>
+        <div class="stat-label">Overdue</div>
+      </div>
+    </div>
+
+    <!-- EQUIPMENT + SCHEDULE -->
+    <div class="dashboard-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <h3><i class="fas fa-microchip"></i> Recent Equipment</h3>
+          <a class="link" data-nav="equipment">View all →</a>
+        </div>
+        <div class="equip-list" id="equipList">
+          <div class="equip-loading">
+            <i class="fas fa-spinner fa-spin"></i> Loading equipment...
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h3><i class="fas fa-calendar-alt"></i> Upcoming</h3>
+          <a class="link" data-nav="schedule">Calendar →</a>
+        </div>
+        <div class="schedule-list" id="scheduleList">
+          <div class="schedule-loading">
+            <i class="fas fa-spinner fa-spin"></i> Loading schedule...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS + SHIFTS -->
+    <div class="dashboard-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+        </div>
+        <div class="quick-grid">
+          <div class="quick-action qa-blue" data-action="add-equipment">
+            <i class="fas fa-plus-circle"></i>
+            <span>Add Equipment</span>
+          </div>
+          <div class="quick-action qa-teal" data-action="schedule">
+            <i class="fas fa-calendar-plus"></i>
+            <span>Schedule Task</span>
+          </div>
+          <div class="quick-action qa-orange" data-action="brainstorm">
+            <i class="fas fa-lightbulb"></i>
+            <span>Add Idea</span>
+          </div>
+          <div class="quick-action qa-purple" data-action="shift">
+            <i class="fas fa-user-clock"></i>
+            <span>Manage Shift</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h3><i class="fas fa-user-clock"></i> Today's Shifts</h3>
+          <a class="link" data-nav="shifts">Manage →</a>
+        </div>
+        <div class="shift-board" id="shiftBoard">
+          <!-- Injected by dashboard.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- BRAINSTORM TABLE -->
+    <div class="full-panel">
+      <div class="panel-header">
+        <h3><i class="fas fa-lightbulb"></i> Brainstorm Board</h3>
+        <a class="link" data-nav="brainstorm">Open board →</a>
+      </div>
+      <table class="brainstorm-table">
+        <thead>
+          <tr>
+            <th>Idea</th>
+            <th>Priority</th>
+            <th>Assignee</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="brainstormBody">
+          <!-- Injected by dashboard.js -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

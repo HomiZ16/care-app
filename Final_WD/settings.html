@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARE · Settings</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <link rel="stylesheet" href="css/theme.css"> <!-- Added this back! -->
+</head>
+<body data-page="settings">
+
+  <!-- SIDEBAR -->
+  <div id="care-sidebar-root"></div>
+
+  <!-- MAIN -->
+  <main class="main">
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+    <div class="topbar">
+      <div>
+        <h2>Settings</h2>
+        <span>Manage your account, preferences, and app behavior.</span>
+      </div>
+      <div class="topbar-actions">
+        <a class="btn-icon" href="dashboard.html" title="Back to Dashboard">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- SETTINGS GRID -->
+    <div class="settings-grid">
+
+      <!-- MANAGE ACCOUNT -->
+      <section class="settings-card" id="accountCard">
+        <div class="settings-card-header">
+          <div class="settings-icon icon-blue"><i class="fas fa-user-circle"></i></div>
+          <div>
+            <h3>Manage Account</h3>
+            <p>Update your profile and login details.</p>
+          </div>
+        </div>
+
+        <form class="settings-form" id="accountForm">
+          <div class="form-group">
+            <label for="accName">Business / Owner name</label>
+            <input type="text" id="accName" placeholder="Your business name">
+          </div>
+          <div class="form-group">
+            <label for="accEmail">Email</label>
+            <input type="email" id="accEmail" placeholder="you@business.com">
+          </div>
+          <div class="form-group">
+            <label for="accPassword">New password <span class="hint">(leave blank to keep current)</span></label>
+            <input type="password" id="accPassword" placeholder="••••••••" autocomplete="new-password">
+          </div>
+
+          <div class="settings-actions">
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-save"></i> Save changes
+            </button>
+          </div>
+          <div class="settings-message" id="accountMessage"></div>
+        </form>
+      </section>
+
+      <!-- HELP -->
+      <section class="settings-card" id="helpCard">
+        <div class="settings-card-header">
+          <div class="settings-icon icon-teal"><i class="fas fa-life-ring"></i></div>
+          <div>
+            <h3>Help & Support</h3>
+            <p>Find answers or get in touch.</p>
+          </div>
+        </div>
+
+        <div class="help-list">
+          <a class="help-item" href="#" data-help="docs">
+            <i class="fas fa-book"></i>
+            <div>
+              <strong>Documentation</strong>
+              <span>Read the CARE user guide</span>
+            </div>
+            <i class="fas fa-chevron-right chevron"></i>
+          </a>
+          <a class="help-item" href="#" data-help="faq">
+            <i class="fas fa-question-circle"></i>
+            <div>
+              <strong>FAQs</strong>
+              <span>Common questions answered</span>
+            </div>
+            <i class="fas fa-chevron-right chevron"></i>
+          </a>
+          <a class="help-item" href="#" data-help="contact">
+            <i class="fas fa-envelope"></i>
+            <div>
+              <strong>Contact support</strong>
+              <span>support@care-app.com</span>
+            </div>
+            <i class="fas fa-chevron-right chevron"></i>
+          </a>
+        </div>
+      </section>
+
+      <!-- DARK MODE -->
+      <section class="settings-card" id="themeCard">
+        <div class="settings-card-header">
+          <div class="settings-icon icon-orange"><i class="fas fa-moon"></i></div>
+          <div>
+            <h3>Dark Mode</h3>
+            <p>Switch between light and dark theme.</p>
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <strong id="themeLabel">Light mode</strong>
+            <span>Reduce eye strain in low light.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- LOG OUT -->
+      <section class="settings-card" id="logoutCard">
+        <div class="settings-card-header">
+          <div class="settings-icon icon-red"><i class="fas fa-sign-out-alt"></i></div>
+          <div>
+            <h3>Log Out</h3>
+            <p>Sign out of your CARE account.</p>
+          </div>
+        </div>
+
+        <div class="logout-row">
+          <p>You will need to sign in again to access your dashboard.</p>
+          <button class="btn-danger" id="settingsLogoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Log out
+          </button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div id="care-footer-root"></div>
+  </main>
+
+  <!-- ============ HELP MODAL ============ -->
+  <!-- Keep modals OUTSIDE the <main> tag, right before the scripts -->
+  <div class="modal-overlay" id="helpModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="helpTitle">Help</h3>
+        <button class="modal-close" id="helpClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="help-content" id="helpContent" style="font-size: 0.9rem; color: var(--text-soft); line-height: 1.6;">
+        <!-- Content injected by JS -->
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-primary" id="helpOkBtn" style="width: 100%;">
+          Got it
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/components/footer.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

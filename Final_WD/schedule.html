@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CARE · Schedule</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/schedule.css">
+  <link rel="stylesheet" href="css/theme.css">
+</head>
+<body data-page="schedule">
+
+  <div id="care-sidebar-root"></div>
+
+  <main class="main">
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h2>Schedule</h2>
+        <span>Plan maintenance tasks and keep your equipment running.</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="view-switch" id="viewSwitch">
+          <button class="view-btn active" data-view="calendar" title="Calendar view">
+            <i class="fas fa-calendar-alt"></i>
+          </button>
+          <button class="view-btn" data-view="list" title="List view">
+            <i class="fas fa-list"></i>
+          </button>
+        </div>
+        <button class="btn-primary" id="addTaskBtn">
+          <i class="fas fa-plus"></i> New Task
+        </button>
+      </div>
+    </div>
+
+    <!-- QUICK STATS -->
+    <div class="schedule-summary" id="scheduleSummary">
+      <div class="summary-chip" data-filter="all">
+        <span class="chip-count" id="countAllTasks">0</span>
+        <span class="chip-label">All Tasks</span>
+      </div>
+      <div class="summary-chip" data-filter="today">
+        <span class="dot dot-today"></span>
+        <span class="chip-count" id="countToday">0</span>
+        <span class="chip-label">Today</span>
+      </div>
+      <div class="summary-chip" data-filter="week">
+        <span class="dot dot-week"></span>
+        <span class="chip-count" id="countWeek">0</span>
+        <span class="chip-label">This Week</span>
+      </div>
+      <div class="summary-chip" data-filter="overdue">
+        <span class="dot dot-overdue"></span>
+        <span class="chip-count" id="countOverdue">0</span>
+        <span class="chip-label">Overdue</span>
+      </div>
+      <div class="summary-chip" data-filter="done">
+        <span class="dot dot-done"></span>
+        <span class="chip-count" id="countDone">0</span>
+        <span class="chip-label">Completed</span>
+      </div>
+    </div>
+
+    <!-- ============ CALENDAR VIEW ============ -->
+    <section class="view-panel active" id="calendarView">
+      <div class="calendar-card">
+        <div class="calendar-toolbar">
+          <div class="calendar-nav">
+            <button class="btn-icon" id="prevMonth" title="Previous month">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <h3 id="monthLabel">June 2026</h3>
+            <button class="btn-icon" id="nextMonth" title="Next month">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="btn-secondary btn-today" id="goToday">Today</button>
+          </div>
+          <div class="calendar-legend">
+            <span><span class="legend-dot legend-priority-high"></span> High</span>
+            <span><span class="legend-dot legend-priority-med"></span> Medium</span>
+            <span><span class="legend-dot legend-priority-low"></span> Low</span>
+          </div>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid">
+          <!-- day-of-week headers + day cells injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LIST VIEW ============ -->
+    <section class="view-panel" id="listView">
+      <div class="list-card">
+        <div class="list-toolbar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search tasks..." id="taskSearch">
+          </div>
+          <select class="toolbar-select" id="filterStatus">
+            <option value="all">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="done">Completed</option>
+            <option value="overdue">Overdue</option>
+          </select>
+          <select class="toolbar-select" id="filterPriority">
+            <option value="all">All priorities</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+
+        <div class="task-list" id="taskList">
+          <!-- Task rows injected by JS -->
+        </div>
+
+        <div class="empty-state" id="taskEmpty" style="display:none;">
+          <div class="empty-icon"><i class="fas fa-calendar-check"></i></div>
+          <h3>No tasks scheduled</h3>
+          <p>Create your first maintenance task to keep everything on track.</p>
+          <button class="btn-primary" id="emptyTaskAdd">
+            <i class="fas fa-plus"></i> New Task
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ ADD/EDIT TASK MODAL ============ -->
+  <div class="modal-overlay" id="taskModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="taskModalTitle">New Task</h3>
+        <button class="modal-close" id="taskModalClose"><i class="fas fa-times"></i></button>
+      </div>
+
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+
+        <div class="form-group">
+          <label for="taskTitle">Task title</label>
+          <input type="text" id="taskTitle" placeholder="e.g. Freezer maintenance" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="taskDate">Date</label>
+            <input type="date" id="taskDate" required>
+          </div>
+          <div class="form-group">
+            <label for="taskTime">Time</label>
+            <input type="time" id="taskTime">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="taskEquipment">Equipment</label>
+          <select id="taskEquipment">
+            <option value="">— None / General —</option>
+            <!-- Equipment options injected by JS -->
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="taskPriority">Priority</label>
+            <select id="taskPriority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="form-group">
+          <label for="taskAssignee">Assignee</label>
+          <select id="taskAssignee">
+            <option value="">-- Unassigned --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="taskNotes">Notes (optional)</label>
+          <input type="text" id="taskNotes" placeholder="e.g. Bring replacement parts">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="taskModalCancel">Cancel</button>
+          <button type="submit" class="btn-primary" id="taskSaveBtn">
+            <i class="fas fa-check"></i> Save Task
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ TASK DETAIL MODAL ============ -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3 id="detailTitle">Task</h3>
+        <button class="modal-close" id="detailClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="detail-body" id="detailBody"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="detailDelete">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+        <button type="button" class="btn-primary" id="detailEdit">
+          <i class="fas fa-pen"></i> Edit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DELETE CONFIRM ============ -->
+  <div class="modal-overlay" id="deleteTaskModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3>Delete Task?</h3>
+        <button class="modal-close" id="deleteTaskClose"><i class="fas fa-times"></i></button>
+      </div>
+      <p class="delete-text">
+        Are you sure you want to delete <strong id="deleteTaskName">this task</strong>?
+        This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="deleteTaskCancel">Cancel</button>
+        <button type="button" class="btn-danger" id="deleteTaskConfirm">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TOAST ============ -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/schedule.js"></script>
+</body>
+</html>
